@@ -283,14 +283,19 @@ abstract class Zend_Mail_Transport_Abstract
             require_once 'Zend/Mail/Transport/Exception.php';
             throw new Zend_Mail_Transport_Exception('No body specified');
         }
-
+        
         // Get headers
         $this->_headers = $this->_mail->getHeaders();
-        $headers = $body->getHeadersArray($this->EOL);
-        foreach ($headers as $header) {
-            // Headers in Zend_Mime_Part are kept as arrays with two elements, a
-            // key and a value
-            $this->_headers[$header[0]] = array($header[1]);
+
+        if(count($this->_parts) == 1 ){
+            // Copy the body headers into the message header
+
+            $headers = $body->getHeadersArray($this->EOL);
+            foreach ($headers as $header) {
+                    // Headers in Zend_Mime_Part are kept as arrays with two elements, a
+                    // key and a value
+                    $this->_headers[$header[0]] = array($header[1]);
+            }
         }
     }
 
